@@ -1,22 +1,17 @@
-Object = require "classic"
-require "bunny"
-require "carrotmanager"
+local Game = require "game"
 
-font = love.graphics.newFont("PressStart2P-Regular.ttf", 24)
-bigFont = love.graphics.newFont("PressStart2P-Regular.ttf", 42)
+font = love.graphics.newFont("assets/PressStart2P-Regular.ttf", 24)
+bigFont = love.graphics.newFont("assets/PressStart2P-Regular.ttf", 42)
 
 function love.load()
-    carrotManager = CarrotManager()
+    game = Game()
 end
-
 
 function love.update(dt)
-    carrotManager:update(dt)
+    game:update(dt)
 end
 
-
-
 function love.draw()
-    carrotManager:draw()
+    game:draw()
 end
 

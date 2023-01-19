@@ -1,23 +1,22 @@
-Carrot = Object:extend()
+local Object = require "libraries/classic"
+local Carrot = Object:extend()
 
-
-
-function Carrot:new(spawnX, spawnY, width, height, speed)
-    self.x = spawnX - width
+function Carrot:new(spawnX, spawnY, width, height, game)
+    self.game = game
+    self.mode = "line"
+    self.x = spawnX
     self.y = spawnY - height
     self.width = width
     self.height = height
-    self.move = true
-    self.speed = speed
 end
 
 function Carrot:update(dt)
-
+    self.x = self.x - self.game.speed * dt
 end
 
 function Carrot:draw()
     love.graphics.rectangle(
-        "fill",
+        self.mode,
         self.x,
         self.y,
         self.width,
@@ -26,6 +25,4 @@ function Carrot:draw()
     )
 end
 
-function Carrot:setMove(move)
-    self.move = move
-end
+return Carrot
