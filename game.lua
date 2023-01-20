@@ -1,6 +1,7 @@
 local Object = require "libraries/classic"
 local Bunny = require "bunny"
 local CarrotManager = require "carrotmanager"
+local GameOverScreen = require "menus/gameoverscreen"
 local Game = Object:extend()
 
 Game.floor = love.graphics.getHeight()/5*4
@@ -8,10 +9,10 @@ Game.floor = love.graphics.getHeight()/5*4
 function Game:new()
     self.carrotManager = CarrotManager(self)
     self.bunny = Bunny(self)
-
+    
     self.gameOver = false
     
-    self.speed = 100
+    self.speed = 100 
     self.spawnTimer = 5
     self.spawnFrequency = (100/self.speed)*5
 
@@ -23,6 +24,11 @@ function Game:new()
         content, size = love.filesystem.read("highScoreFile.txt")
         self.highScore = tonumber(content)
     end
+
+    self.gameOverScreen = GameOverScreen(self.highScore, self.floor)
+
+    self.cursor = love.mouse.newCursor("assets/carrotcursor.png", 0, 0)   
+    love.mouse.setCursor(self.cursor)
 end
 
 function Game:update(dt)
@@ -31,24 +37,40 @@ function Game:update(dt)
         self:handleAddScore()
     end
 
+    love.mouse.setVisible(self.gameOver)
+
     self.bunny:update(dt)
     self.gameOver = self:checkCollision()
-    
-    
 
     if self.gameOver then
         self.spawnTimer = 0
         self:saveHighScore()
+        self.gameOverScreen:update()
     end
 
     self:handleSpawnTimer(dt)
 end
 
 function Game:draw()
+    love.graphics.setBackgroundColor(135/255, 206/255, 235/255, 1)
+    self:drawFloor()
     self.carrotManager:draw()
     self.bunny:draw()
+
     local score_y = love.graphics.getHeight()/25
-    love.graphics.printf(self.score, font, -love.graphics.getWidth()/25, score_y, love.graphics.getWidth(), "right")
+    love.graphics.printf(
+        self.score,
+        font,
+        -love.graphics.getWidth()/25,
+        score_y,
+        love.graphics.getWidth(),
+        "right"
+    )
+
+    if self.gameOver then
+        self.gameOverScreen:draw()
+    end
+
 end
 
 function Game:checkCollision()
@@ -117,6 +139,27 @@ function Game:handleAddScore()
             self.addScore = false
         end
     end
+end
+
+function Game:drawFloor()
+    love.graphics.setColor(72/255, 111/255, 56/255, 1)
+    love.graphics.rectangle(
+        "fill",
+        0,
+        self.floor,
+        love.graphics.getWidth(),
+        self.floor
+    )
+    love.graphics.setColor(1, 1, 1, 1)
+
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.line(
+        0,
+        self.floor,
+        love.graphics.getWidth(),
+        self.floor
+    )
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 return Game
