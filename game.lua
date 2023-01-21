@@ -1,7 +1,7 @@
 local Object = require "libraries/classic"
 local Bunny = require "bunny"
-local CarrotManager = require "carrotmanager"
-local GameOverScreen = require "menus/gameoverscreen"
+local CarrotManager = require "carrot_control/carrotmanager"
+local GameOverScreen = require "gui/gameoverscreen"
 local Game = Object:extend()
 
 Game.floor = love.graphics.getHeight()/5*4

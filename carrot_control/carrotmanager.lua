@@ -1,5 +1,5 @@
 local Object = require "libraries/classic"
-local Carrot = require "carrot"
+local Carrot = require "carrot_control/carrot"
 local CarrotManager = Object:extend()
 
 function CarrotManager:new(game)
