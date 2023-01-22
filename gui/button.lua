@@ -2,6 +2,7 @@ local Object = require "libraries/classic"
 local Button = Object:extend()
 
 function Button:new(
+    buttonText,
     buttonMode,
     buttonX,
     buttonY,
@@ -10,6 +11,7 @@ function Button:new(
     buttonCorner,
     buttonFunc
 )
+    self.text = buttonText
     self.mode = buttonMode
     self.width = buttonWidth
     self.height = buttonHeight
@@ -18,6 +20,11 @@ function Button:new(
     self.corner = buttonCorner
     self.func = buttonFunc
     self.mouseClicked = false
+
+    local rw,lines = font:getWrap(self.text, self.width) 
+    local lineheight = font:getLineHeight() * (font:getAscent() + font:getDescent())
+    local height = #lines * lineheight
+    self.textY = self.height / 2 - height / 2
 end
 
 function Button:update(mouseX, mouseY)
@@ -38,7 +45,20 @@ function Button:drawButton()
         self.height,
         self.corner
     )
-    love.graphics.setColor(237/255, 145/255, 33/255, 1)
+    love.graphics.setColor(1, 1, 1, 1)
+
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.rectangle(
+        "line",
+        self.x,
+        self.y,
+        self.width,
+        self.height,
+        self.corner
+    )
+    love.graphics.setColor(1, 1, 1, 1)
+
+    self:drawText()
 end
 
 function Button:detectClick(mouseX, mouseY)
@@ -62,6 +82,17 @@ function Button:detectClick(mouseX, mouseY)
         self.mouseClicked = false
     end
 
+end
+
+function Button:drawText()
+    love.graphics.printf(
+        self.text,
+        font,
+        self.x ,
+        self.y + self.textY,
+        self.width,
+        "center"
+    )
 end
 
 return Button

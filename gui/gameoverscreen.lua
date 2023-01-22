@@ -1,22 +1,21 @@
 local Object = require "libraries/classic"
-local Button = require"gui/button"
+local Button = require "gui/button"
 local GameOverScreen = Object:extend()
 
-function GameOverScreen:new(highScore, floor)
-    self.highScore = highScore
+function GameOverScreen:new(game)
     self.width = love.graphics.getWidth()
     self.height = love.graphics.getHeight()
-    self.floor = floor
+    self.game = game
 
     self.buttonTable = {}
     self.buttonMode = "fill"
     self.buttonWidth = 200
     self.buttonHeight = 60
-    self.buttonY = self.floor + self.buttonHeight / 2
+    self.buttonY = self.game.floor + self.buttonHeight / 2
     self.buttonCorner = 10
-
     self.buttonList = {
         {
+            text = "PLAY AGAIN",
             mode = self.buttonMode,
             width = self.buttonWidth,
             height = self.buttonHeight,
@@ -24,12 +23,22 @@ function GameOverScreen:new(highScore, floor)
             y = self.buttonY,
             corner = self.buttonCorner,
             func = function()
-                self:printDav()
+                self:restartGame()
             end
         },
-        --{love.graphics.getWidth() * 6 / 7 - self.buttonWidth}
+        {
+            text = "MAIN MENU",
+            mode = self.buttonMode,
+            width = self.buttonWidth,
+            height = self.buttonHeight,
+            x = love.graphics.getWidth() * 6 / 7 - self.buttonWidth,
+            y = self.buttonY,
+            corner = self.buttonCorner,
+            func = function()
+                self:returnMainMenu()
+            end
+        }
     }
-    
     self:spawnButtons()
 end
 
@@ -40,12 +49,13 @@ function GameOverScreen:update()
         self.buttonTable[i]:update(self.mouseX, self.mouseY)
     end
 end
+
 function GameOverScreen:draw()
     self:drawScreen()
-    self:drawText()
     for i = 1, #self.buttonTable do
         self.buttonTable[i]:draw()
     end
+     self:drawText()
 end
 
 function GameOverScreen:drawScreen()
@@ -70,7 +80,7 @@ function GameOverScreen:drawText()
         "center"
     )
     love.graphics.printf(
-        "HIGH SCORE: "..self.highScore,
+        "HIGH SCORE: "..self.game.highScore,
         font,
         0,
         love.graphics.getHeight()*2/5,
@@ -82,6 +92,7 @@ end
 function GameOverScreen:spawnButtons()
     for i = 1, #self.buttonList do
         local btn = Button(
+            self.buttonList[i].text,
             self.buttonList[i].mode,
             self.buttonList[i].x,
             self.buttonList[i].y,
@@ -92,10 +103,15 @@ function GameOverScreen:spawnButtons()
         )
         table.insert(self.buttonTable, btn)
     end
+    
 end
 
-function GameOverScreen:printDav()
-    print("david")
+function GameOverScreen:restartGame()
+    self.game:new()
+end
+
+function GameOverScreen:returnMainMenu()
+    self.game.mainMenu:new()
 end
 
 return GameOverScreen

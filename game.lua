@@ -6,9 +6,11 @@ local Game = Object:extend()
 
 Game.floor = love.graphics.getHeight()/5*4
 
-function Game:new()
+function Game:new(mainMenu)
     self.carrotManager = CarrotManager(self)
     self.bunny = Bunny(self)
+
+    self.mainMenu = mainMenu
     
     self.gameOver = false
     
@@ -25,10 +27,7 @@ function Game:new()
         self.highScore = tonumber(content)
     end
 
-    self.gameOverScreen = GameOverScreen(self.highScore, self.floor)
-
-    self.cursor = love.mouse.newCursor("assets/carrotcursor.png", 0, 0)   
-    love.mouse.setCursor(self.cursor)
+    self.gameOverScreen = GameOverScreen(self)
 end
 
 function Game:update(dt)
