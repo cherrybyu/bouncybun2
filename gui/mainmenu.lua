@@ -1,10 +1,13 @@
 local Object = require "libraries/classic"
 local Button = require"gui/button"
 local Game = require "game"
+local Settings = require "gui/settings"
 local MainMenu = Object:extend()
 
 function MainMenu:new()
     self.game = nil
+    self.settings = Settings(self)
+
     self.text = "BOUNCY BUN"
     self.textX = 0
     self.textY = love.graphics.getHeight() * 1 / 4
@@ -12,26 +15,33 @@ function MainMenu:new()
     self.textAlign = "center"
 
     self.buttonTable = {}
-    -- self.buttonMode = "fill"
-    -- self.buttonWidth = 200
-    -- self.buttonHeight = 60
-    -- self.buttonY = self.floor + self.buttonHeight / 2
-    -- self.buttonCorner = 10
-
     self.buttonList = {
         {
             text = "START GAME",
             mode = "fill",
-            x = 0,
-            y = 0,
-            width = 200,
+            x = love.graphics.getWidth() * 1 / 7,
+            y = love.graphics.getHeight() * 3 / 4,
+            width = 275,
             height = 100,
             corner = 20,
             func = function()
                 self:startGame()
             end
+        },
+        {
+            text = "SETTINGS",
+            mode = "fill",
+            x = love.graphics.getWidth() * 6 / 7 - 250,
+            y = love.graphics.getHeight() * 3 / 4,
+            width = 275,
+            height = 100,
+            corner = 20,
+            func = function()
+                self:settingsButton()
+            end
         }
     }
+    self.settingsPage = false
     self:spawnButtons()
 end
 
@@ -46,6 +56,10 @@ function MainMenu:update(dt)
     else
         self.game:update(dt)
     end
+
+    if self.settingsPage == true then
+        self.settings:update()
+    end
 end
 
 function MainMenu:draw()
@@ -58,6 +72,10 @@ function MainMenu:draw()
         end
     else
         self.game:draw()
+    end
+    
+    if self.settingsPage == true then
+        self.settings:draw()
     end
 end
 
@@ -90,6 +108,10 @@ end
 
 function MainMenu:startGame()
     self.game = Game(self)
+end
+
+function MainMenu:settingsButton()
+    self.settingsPage = true
 end
 
 return MainMenu

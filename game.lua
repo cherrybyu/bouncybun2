@@ -1,12 +1,14 @@
 local Object = require "libraries/classic"
 local Bunny = require "bunny"
 local CarrotManager = require "carrot_control/carrotmanager"
+local CloudManager = require "cloud_control/cloudmanager"
 local GameOverScreen = require "gui/gameoverscreen"
 local Game = Object:extend()
 
 Game.floor = love.graphics.getHeight()/5*4
 
 function Game:new(mainMenu)
+    self.cloudManager = CloudManager(self)
     self.carrotManager = CarrotManager(self)
     self.bunny = Bunny(self)
 
@@ -31,7 +33,9 @@ function Game:new(mainMenu)
 end
 
 function Game:update(dt)
+
     if self.gameOver == false then
+        self.cloudManager:update(dt)
         self.carrotManager:update(dt)
         self:handleAddScore()
     end
@@ -43,16 +47,17 @@ function Game:update(dt)
 
     if self.gameOver then
         self.spawnTimer = 0
+        self.cloudSpawnTimer = 0
         self:saveHighScore()
         self.gameOverScreen:update()
     end
-
     self:handleSpawnTimer(dt)
 end
 
 function Game:draw()
     love.graphics.setBackgroundColor(135/255, 206/255, 235/255, 1)
     self:drawFloor()
+    self.cloudManager:draw()
     self.carrotManager:draw()
     self.bunny:draw()
 

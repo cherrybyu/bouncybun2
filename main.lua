@@ -11,6 +11,11 @@ love.mouse.setCursor(cursor)
 function love.load()
    -- game = Game()
     mainMenu = MainMenu()
+
+    bgm = love.audio.newSource("assets/bgm/bgm2.mp3", "static")
+    bgm:setLooping(true)
+    love.audio.setVolume(0.1)
+    love.audio.play(bgm)
 end
 
 function love.update(dt)

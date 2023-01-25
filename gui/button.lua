@@ -36,7 +36,7 @@ function Button:draw()
 end
 
 function Button:drawButton()
-    love.graphics.setColor(237/255, 145/255, 33/255, 1)
+    love.graphics.setColor(252/255, 204/255, 220/255, 1)
     love.graphics.rectangle(
         self.mode,
         self.x,
@@ -47,7 +47,6 @@ function Button:drawButton()
     )
     love.graphics.setColor(1, 1, 1, 1)
 
-    love.graphics.setColor(0, 0, 0, 1)
     love.graphics.rectangle(
         "line",
         self.x,
@@ -56,7 +55,6 @@ function Button:drawButton()
         self.height,
         self.corner
     )
-    love.graphics.setColor(1, 1, 1, 1)
 
     self:drawText()
 end
@@ -81,10 +79,10 @@ function Button:detectClick(mouseX, mouseY)
     if love.mouse.isDown(1) == false then
         self.mouseClicked = false
     end
-
 end
 
 function Button:drawText()
+    love.graphics.setColor(248/255, 132/255, 170/255, 1)
     love.graphics.printf(
         self.text,
         font,
@@ -93,6 +91,7 @@ function Button:drawText()
         self.width,
         "center"
     )
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 return Button
