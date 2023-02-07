@@ -8,24 +8,16 @@ function CloudManager:new(game)
 
     self.spawnTimer = 10
    
-    self.cloud1 = love.graphics.newImage("assets/clouds/cloud1.png")
-    self.cloud2 = love.graphics.newImage("assets/clouds/cloud2.png")
-    self.cloud3 = love.graphics.newImage("assets/clouds/cloud3.png")
-    self.cloud4 = love.graphics.newImage("assets/clouds/cloud4.png")
-    self.cloud5 = love.graphics.newImage("assets/clouds/cloud5.png")
-    self.cloud6 = love.graphics.newImage("assets/clouds/cloud6.png")
-
     self.cloudImages = {
-        self.cloud1,
-        self.cloud2,
-        self.cloud3,
-        self.cloud4,
-        self.cloud5,
-        self.cloud6
+        love.graphics.newImage("assets/clouds/cloud1.png"),
+        love.graphics.newImage("assets/clouds/cloud2.png"),
+        love.graphics.newImage("assets/clouds/cloud3.png"),
+        love.graphics.newImage("assets/clouds/cloud4.png"),
+        love.graphics.newImage("assets/clouds/cloud5.png"),
+        love.graphics.newImage("assets/clouds/cloud6.png")
     }
 
     self.spawnX = love.graphics.getWidth()
-    self.orientation = 0
 end
 
 function CloudManager:update(dt)
@@ -51,7 +43,6 @@ function CloudManager:spawnCloud()
     local cld = Cloud(
         self.cloudImages[cloudIndex],
         self.spawnX,
-        self.orientation,
         self.speed
     )
     table.insert(self.cloudTable, cld)

@@ -25,6 +25,18 @@ function Settings:new(mainMenu)
             func = function()
                 self:returnToMenu()
             end
+        },
+        {
+            text = "RESET HIGH SCORE",
+            mode = "fill",
+            x = love.graphics.getWidth() / 2 - 350/2,
+            y = love.graphics.getHeight() * 1 / 5,
+            width = 350,
+            height = 100,
+            corner = 30,
+            func = function()
+                self:resetHighScore()
+            end
         }
     }
 
@@ -63,15 +75,6 @@ function Settings:draw()
     )
     love.graphics.setColor(1, 1, 1, 1)
 
-    love.graphics.printf(
-        "COMING SOON ...",
-        bigFont,
-        15,
-        love.graphics.getHeight() * 1 / 3,
-        love.graphics.getWidth() - 15 * 2,
-        "center"
-    )
-
     for i = 1, #self.buttonTable do
         self.buttonTable[i]:draw()
     end
@@ -95,6 +98,12 @@ end
 
 function Settings:returnToMenu()
     self.mainMenu.settingsPage = false
+end
+
+function Settings:resetHighScore()
+    if love.filesystem.getInfo("highScoreFile.txt") ~= nil then
+        love.filesystem.write("highScoreFile.txt", "0")
+    end
 end
 
 return Settings

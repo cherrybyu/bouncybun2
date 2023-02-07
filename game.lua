@@ -47,7 +47,6 @@ function Game:update(dt)
 
     if self.gameOver then
         self.spawnTimer = 0
-        self.cloudSpawnTimer = 0
         self:saveHighScore()
         self.gameOverScreen:update()
     end
@@ -90,10 +89,10 @@ function Game:checkCollision()
         local carrotBottom = self.carrotManager.carrotTable[i].y + self.carrotManager.carrotTable[i].height
 
         --early returns when bunny collides with carrot
-        if bunnyRight > carrotLeft
-            and bunnyLeft < carrotRight
-            and bunnyBottom > carrotTop
-            and bunnyTop < carrotBottom then
+        if bunnyRight >= carrotLeft
+            and bunnyLeft <= carrotRight
+            and bunnyBottom >= carrotTop
+            and bunnyTop <= carrotBottom then
             return true
         end
 

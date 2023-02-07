@@ -107,7 +107,7 @@ function GameOverScreen:spawnButtons()
 end
 
 function GameOverScreen:restartGame()
-    self.game:new()
+    self.game:new(self.game.mainMenu)
 end
 
 function GameOverScreen:returnMainMenu()

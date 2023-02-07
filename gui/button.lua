@@ -19,7 +19,7 @@ function Button:new(
     self.y = buttonY
     self.corner = buttonCorner
     self.func = buttonFunc
-    self.mouseClicked = false
+    self.mouseClicked = true
 
     local rw,lines = font:getWrap(self.text, self.width) 
     local lineheight = font:getLineHeight() * (font:getAscent() + font:getDescent())
